@@ -1,7 +1,23 @@
-
-import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [calculation, setCalculation] = useState("");
+  const [result, setResult] = useState("");
+
+  const ops = ['/', '*', '+', '-', '.'];
+
+  const updateCalculation = value => {
+    if (
+      ops.includes(value) && calculation === '' ||
+      ops.includes(value) && ops.includes(calculation.slice(-1))
+    ) {
+      return;
+    }
+    setCalculation(calculation + value);
+    if (!ops.includes(value)) {
+      setResult(eval(calculation+value).toString());
+    }
+  }
 
   const createDigits = () => {
     const digits = [];
@@ -13,26 +29,40 @@ function App() {
     return digits;
   }
 
+  const calculate = () => {
+    setCalculation(eval(calculation).toString());
+  }
+
+  const deleteLast = () => {
+    if (calculation == '') {
+      return;
+    }
+    const value = calculation.slice(0, -1);
+    setCalculation(value);
+  }
+
+
   return (
     <div className="App">
       <div className="fi-calculator">
           <div className="fi-display">
 
-            <span>{0}</span>0
+            {result ? <span>({result})</span> : ''}
+            {calculation || "0"}
           </div>
           <div className="fi-operators">
-              <button>/</button>
-              <button>*</button>
-              <button>+</button>
-              <button>-</button>
+              <button onClick={() => updateCalculation('/')}>/</button>
+              <button onClick={() => updateCalculation('*')}>*</button>
+              <button onClick={() => updateCalculation('+')}>+</button>
+              <button onClick={() => updateCalculation('-')}>-</button>
 
-            <button>DEL</button>
+            <button onClick={deleteLast}>DEL</button>
           </div>
           <div className="fi-digits">
               { createDigits() }
-              <button>0</button>
-              <button>.</button>
-              <button>=</button>
+              <button onClick={() => updateCalculation('0')}>0</button>
+              <button onClick={() => updateCalculation('.')}>.</button>
+              <button onClick={calculate}>=</button>
 
           </div>
 
