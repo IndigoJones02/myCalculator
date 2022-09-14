@@ -3,7 +3,6 @@ import './App.css';
 
 function App() {
 
-
   const createDigits = () => {
     const digits = [];
     for(let i = 1; i < 10; i++) {
@@ -13,7 +12,7 @@ function App() {
     }
     return digits;
   }
-  
+
   return (
     <div className="App">
       <div className="fi-calculator">
